@@ -33,6 +33,7 @@ app.get("/", async (req, res) => {
       kjoringensArt: { kodeBeskrivelse },
     },
     godkjenning:{tekniskGodkjenning:{tekniskeData:{generelt:{merke}}}},
+    godkjenning:{tekniskGodkjenning:{tekniskeData:{generelt:{fabrikant:{fabrikantNavn}}}}},
     godkjenning:{tekniskGodkjenning:{tekniskeData:{generelt:{handelsbetegnelse}}}},
     periodiskKjoretoyKontroll:{kontrollfrist,sistGodkjent}
   } = data.kjoretoydataListe[0];
@@ -40,6 +41,7 @@ app.get("/", async (req, res) => {
   const filteredData = {
     kjoretoyId,
     kodeBeskrivelse,
+    fabrikantNavn,    
     merke,
     handelsbetegnelse,
     kontrollfrist,
@@ -48,6 +50,6 @@ app.get("/", async (req, res) => {
   res.send(JSON.stringify(filteredData));
 });
 
-app.listen(8000, () => {
-  console.log("Server is running on port 8000");
+app.listen(process.env.PORT, () => {
+  console.log("Server is running on port heroku ");
 });

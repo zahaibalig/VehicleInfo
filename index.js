@@ -3,10 +3,6 @@ const axios = require("axios");
 
 const app = express();
 
-
-
-// urlencodedl =  https://autosys-kjoretoy-api.atlas.vegvesen.no/api-ui/index-enkeltoppslag.html?appid=fea6488c-bf34-4326-8b83-d1cb5e25d810
-
 const fetchresults = async (number) => {
   try {
     const res = await axios.get(
@@ -27,6 +23,9 @@ app.get("/", async (req, res) => {
   const regNumber = req.query.number;
   let data = await fetchresults(regNumber);
 
+  if(!data) return 
+  
+
   let {
     kjoretoyId,
     registrering: {
@@ -35,6 +34,7 @@ app.get("/", async (req, res) => {
     godkjenning:{tekniskGodkjenning:{tekniskeData:{generelt:{merke}}}},
     godkjenning:{tekniskGodkjenning:{tekniskeData:{generelt:{fabrikant:{fabrikantNavn}}}}},
     godkjenning:{tekniskGodkjenning:{tekniskeData:{generelt:{handelsbetegnelse}}}},
+    forstegangsregistrering:{registrertForstegangNorgeDato},
     periodiskKjoretoyKontroll:{kontrollfrist,sistGodkjent}
   } = data.kjoretoydataListe[0];
  
@@ -45,11 +45,12 @@ app.get("/", async (req, res) => {
     merke,
     handelsbetegnelse,
     kontrollfrist,
-    sistGodkjent
+    sistGodkjent,
+    registrertForstegangNorgeDato,
   };
   res.send(JSON.stringify(filteredData));
 });
-
-app.listen(process.env.PORT, () => {
-  console.log("Server is running on port heroku ");
+// process.env.PORT || 
+app.listen(8000, () => {
+  console.log("Server is running on port 8000 ");
 });
